@@ -61,7 +61,6 @@ def on_message(client, userdata, msg):
         token = parts[0]
         try:
             access_token = AccessToken(token)
-            # Optionnel : vérifier que le token correspond bien à l'appareil (par exemple via un claim device_id)
         except Exception as e:
             print(f"Token JWT invalide: {e}")
             return

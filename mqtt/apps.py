@@ -14,15 +14,5 @@ class MqttConfig(AppConfig):
         if 'runserver' not in sys.argv:
             return
 
-        # Importer ici pour éviter les imports circulaires
-        from .mqtt_client import start_mqtt_client
-
-        # Démarrer le client MQTT dans un thread séparé
-        def start_client():
-            # Attendre un peu pour s'assurer que Django est complètement démarré
-            time.sleep(5)
-            self.mqtt_client = start_mqtt_client()
-
-        thread = threading.Thread(target=start_client)
-        thread.daemon = True  # Le thread s'arrêtera quand le programme principal s'arrête
-        thread.start()
+        from .tasks import mqtt_subscriber_task
+        mqtt_subscriber_task.delay()
