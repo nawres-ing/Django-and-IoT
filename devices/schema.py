@@ -21,12 +21,19 @@ class CreateDevice(graphene.Mutation):
         description = graphene.String(required=True)
         device_type=graphene.String(required=True)
         topic=graphene.String(required=True)
-        auth_token=graphene.String(required=True)
+        auth_token=graphene.String(required=False) #il faut rendre op pour que je puisse generer le token
         is_active=graphene.Boolean(required=True)
-
-    def mutate(self, info, name, description, device_type, topic, auth_token, is_active):
-        device = Device(name=name, description=description , device_type=device_type, topic=topic, auth_token=auth_token, is_active=is_active)
+    @classmethod
+    def mutate(cls,root, info, name, description, device_type, topic, is_active, auth_token=None):
+        device = Device(name=name, description=description, device_type=device_type, topic=topic, auth_token=auth_token, is_active=is_active)
         device.save()
+
+        
+            # Générer le token et s'assurer qu'il est bien enregistré
+        #token = device.generate_device_token()
+            # Rafraîchir l'objet depuis la base de données
+        device.refresh_from_db()
+            
         return CreateDevice(device=device)
 
 class SendCommandToDevice(graphene.Mutation):

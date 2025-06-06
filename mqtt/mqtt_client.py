@@ -57,14 +57,17 @@ def on_message(client, userdata, msg):
         if len(parts) < 4:  # Maintenant on attend au moins 4 parties avec le token
             print("Format de message invalide ou token manquant")
             return
-                
+
         token = parts[0]
         try:
             access_token = AccessToken(token)
         except Exception as e:
             print(f"Token JWT invalide: {e}")
-            return
-                
+            return 
+        ##token = parts[0]
+        #print(f"Token pour les tests: {token}")
+        
+
         data_type = parts[1]
         value = float(parts[2])
         unit = parts[3]
@@ -157,7 +160,7 @@ def get_mqtt_client():
 
 
     # Récupérer les paramètres depuis les settings
-    mqtt_broker = getattr(settings, 'MQTT_BROKER_HOST', 'localhost')
+    mqtt_broker = getattr(settings, 'MQTT_BROKER_HOST')
     mqtt_port = int(getattr(settings, 'MQTT_BROKER_PORT', 1883))
     mqtt_keepalive = getattr(settings, 'MQTT_KEEPALIVE', 60)
     mqtt_username = getattr(settings, 'MQTT_BROKER_USERNAME', None)

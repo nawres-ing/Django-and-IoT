@@ -3,6 +3,7 @@ from .models import Device
 
 @admin.register(Device)
 class DeviceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'device_type', 'topic', 'is_active')
+    list_display = ('name', 'device_type', 'topic', 'is_active','auth_token')
+    readonly_fields = ('auth_token',)
     list_filter = ('device_type', 'is_active')
     search_fields = ('name', 'topic')

@@ -22,6 +22,10 @@ from telemetry.views import TelemetryViewSet
 from alerts.views import AlertViewSet
 from graphene_django.views import GraphQLView
 from .schema import schema
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 
 router = DefaultRouter()
@@ -34,4 +38,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
